@@ -1,0 +1,34 @@
+const fs = require('fs');
+const { readdir, mkdir } = require('fs/promises');
+const path = require('path');
+const { stderr } = process;
+
+(async () => {
+	try {
+		const srcPath = path.join(__dirname, 'styles');
+
+		await mkdir(path.join(__dirname, 'project-dist'));
+		const dstPath = path.join(__dirname, 'project-dist');
+
+		let writeStream = fs.createWriteStream(path.join(dstPath, 'bundle.css'));
+
+
+		const files = await readdir(srcPath, { withFileTypes: true });
+
+		for (const file of files) {
+			if (file.isFile()) {
+				const fileType = path.extname(path.join(__dirname, file.name)).substring(1);
+				if (fileType === 'css') {
+					const buffer = [];
+					const readStream = fs.createReadStream(path.join(srcPath, file.name));
+					readStream.on('data', (chunk) => buffer.push(chunk.toString()));
+					readStream.on('end', () => writeStream.write(buffer.join('\n')));
+				}
+			}
+		}
+	}
+	catch (error) {
+		stderr.write(error);
+	}
+
+})();

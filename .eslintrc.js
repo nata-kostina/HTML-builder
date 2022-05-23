@@ -8,6 +8,7 @@ module.exports = {
   'parserOptions': {
     'ecmaVersion': 12
   },
+  "no-mixed-spaces-and-tabs": [2, "smart-tabs"],
   'rules': {
     'indent': [
       'error',
