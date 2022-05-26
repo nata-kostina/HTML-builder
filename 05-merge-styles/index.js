@@ -7,11 +7,10 @@ const { stderr } = process;
   try {
     const srcPath = path.join(__dirname, 'styles');
     const dstPath = path.join(__dirname, 'project-dist');
-    await rm(dstPath, { recursive: true, force: true });
+    // await rm(dstPath, { recursive: true, force: true });
     await mkdir(dstPath, { recursive: true });
 	
     let writeStream = fs.createWriteStream(path.join(dstPath, 'bundle.css'));
-
 
     const files = await readdir(srcPath, { withFileTypes: true });
 
